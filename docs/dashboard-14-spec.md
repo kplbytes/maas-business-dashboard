@@ -70,21 +70,24 @@
 ## P1 实现要点
 
 1. 用 `mb database list` / `mb table` / `mb field` 把 `database_id=2` 的表与字段 id（如 `source-table 244`、`field 3818`）映射成真实表名/列名（`TotalToken`、`tenant_id`、`model_name`、`snapshot_date` 等）。
-2. 把上述 7 张卡的 MBQL 翻译为 `resources/sql/*.sql`（参数化 `:tenantIds :startDate :endDate`），服务端强制注入 `tenant_id IN (:tenantIds)`。
-3. `dashboards.yml` 定义「租户商业看板」的 7 个 widget，引用上述 SQL + 图表类型（scalar/table/pie/line）。
+2. 把上述 7 张卡的 MBQL 翻译为 `resources/sql/*.sql`（参数化 `:tenantIds :startDate :endDate`），**每个卡片一个独立 SQL 文件**，服务端强制注入 `tenant_id IN (:tenantIds)`。
+3. 看板布局由前端硬编码（固定 React 组件 + Tailwind 网格），**不引入 dashboards.yml 配置层**——每个组件直接调 `POST /api/analytics/query/{queryName}`。
 4. 新系统可在此 7 卡基础上扩展更多图表（本系统定位允许超越 dashboard 14），但 P1 先忠实复刻这 7 卡。
 
 ---
 
 ## 原型实现状态（2026-07-16）
 
-**原型已完成 7张卡片完整实现：**
+**原型已完成 7张卡片 + 3张资金KPI卡完整实现：**
 
 | card_id | Metabase名称 | 原型实现 | 状态 |
 |---------|-------------|---------|------|
 | 147 | 消费总金额 | KPI卡片 | ✅ 已实现 |
 | 148 | 调用次数 | KPI卡片 | ✅ 已实现 |
 | 149 | tokens消耗量 | KPI卡片 | ✅ 已实现 |
+| — | 真实余额（基于 card 161 数据源） | KPI卡片 | ✅ 已实现（独立SQL：fund_real_balance.sql） |
+| — | 可用余额（基于 card 161 数据源） | KPI卡片 | ✅ 已实现（独立SQL：fund_available_balance.sql） |
+| — | 充值金额（基于 card 161 数据源） | KPI卡片 | ✅ 已实现（独立SQL：fund_recharge.sql） |
 | 138 | 租户Tokens折扣率一览 | 数据表格 | ✅ 已实现 |
 | 9 | 模型Token消耗分布 | 环形饼图（ECharts） | ✅ 已实现（按model_name+svc_name聚合） |
 | 121 | 模型使用明细 | 数据表格 | ✅ 已实现 |

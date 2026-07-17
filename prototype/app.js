@@ -19,7 +19,7 @@
 
   const USERS = [
     { id: 1, name: "张三", username: "zhangsan", region: "区域A", role: "sales", assigned: ["tenant-001", "tenant-002", "tenant-003"] },
-    { id: 2, name: "李四", username: "lisi", region: "区域B", role: "sales", assigned: ["tenant-002", "tenant-004"] },
+    { id: 2, name: "李四", username: "lisi", region: "区域B", role: "sales", assigned: ["tenant-004"] },
     { id: 3, name: "王五", username: "wangwu", region: "区域C", role: "sales", assigned: ["tenant-005", "tenant-006"] },
     { id: 4, name: "赵六", username: "zhaoliu", region: "区域A", role: "sales", assigned: [] },
     { id: 5, name: "张三", username: "zhangsan1", region: "区域B", role: "sales", assigned: [] },
