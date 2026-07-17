@@ -734,6 +734,10 @@ button {
   grid-column: span 12;
 }
 
+.chart-card.full-width#card-161-card {
+  min-height: 550px;
+}
+
 .chart-card.half-width {
   grid-column: span 6;
 }
