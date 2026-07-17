@@ -5,24 +5,24 @@
   const $$ = (s, r) => Array.from((r || document).querySelectorAll(s));
 
   const TENANTS = [
-    { key: "te-dco45e236gb6lhix", name: "客户A" },
-    { key: "te-dc3vlj2pzjd2mdfz", name: "客户B" },
-    { key: "te-dc7bol3dacryrbyt", name: "客户C" },
-    { key: "te-9a2k7m3x1pq5r0wz", name: "客户D" },
-    { key: "te-bx8n4c6t2vq1y7ed", name: "客户E" },
-    { key: "te-f3h5j0l9sd2w8qok", name: "客户F" },
-    { key: "te-a1b2c3d4e5f6g7h8", name: "客户G" },
-    { key: "te-z9y8x7w6v5u4t3s2", name: "客户H" },
+    { key: "tenant-001", name: "测试客户A" },
+    { key: "tenant-002", name: "测试客户B" },
+    { key: "tenant-003", name: "测试客户C" },
+    { key: "tenant-004", name: "测试客户D" },
+    { key: "tenant-005", name: "测试客户E" },
+    { key: "tenant-006", name: "测试客户F" },
+    { key: "tenant-007", name: "测试客户G" },
+    { key: "tenant-008", name: "测试客户H" },
   ];
   const tname = (k) => (TENANTS.find((t) => t.key === k) || {}).name || k;
-  const MY_TENANTS = ["te-dco45e236gb6lhix", "te-dc3vlj2pzjd2mdfz", "te-dc7bol3dacryrbyt"];
+  const MY_TENANTS = ["tenant-001", "tenant-002", "tenant-003"];
 
   const USERS = [
-    { id: 1, name: "刘伟", region: "华东区", role: "sales", assigned: ["te-dco45e236gb6lhix", "te-dc3vlj2pzjd2mdfz", "te-dc7bol3dacryrbyt"] },
-    { id: 2, name: "陈静", region: "华北区", role: "sales", assigned: ["te-dc3vlj2pzjd2mdfz", "te-9a2k7m3x1pq5r0wz"] },
-    { id: 3, name: "王哲", region: "华南区", role: "sales", assigned: ["te-bx8n4c6t2vq1y7ed", "te-f3h5j0l9sd2w8qok"] },
-    { id: 4, name: "林涛", region: "华东区", role: "sales", assigned: [] },
-    { id: 5, name: "赵敏", region: "管理中心", role: "admin", assigned: [] },
+    { id: 1, name: "张三", region: "区域A", role: "sales", assigned: ["tenant-001", "tenant-002", "tenant-003"] },
+    { id: 2, name: "李四", region: "区域B", role: "sales", assigned: ["tenant-002", "tenant-004"] },
+    { id: 3, name: "王五", region: "区域C", role: "sales", assigned: ["tenant-005", "tenant-006"] },
+    { id: 4, name: "赵六", region: "区域A", role: "sales", assigned: [] },
+    { id: 5, name: "管理员", region: "管理中心", role: "admin", assigned: [] },
   ];
 
   let state = {
@@ -37,54 +37,54 @@
   const ACC = ["#F59E0B", "#06B6D4", "#3B82F6", "#8B5CF6", "#EC4899", "#10B981", "#F97316", "#84CC16", "#EF4444", "#6366F1"];
 
   const CARD9 = [
-    { model_name: "glm-5", svc_name: "default", token_billion: 3540.9 },
-    { model_name: "minimax-m2.5", svc_name: "default", token_billion: 3377.5 },
-    { model_name: "deepseek-v4-flash", svc_name: "default", token_billion: 874.9 },
-    { model_name: "qwen3.5-plus", svc_name: "default", token_billion: 454.5 },
-    { model_name: "glm-5.1", svc_name: "default", token_billion: 510.9 },
-    { model_name: "deepseek-v4-pro", svc_name: "default", token_billion: 319.8 },
-    { model_name: "deepseek-v3.2", svc_name: "default", token_billion: 305.0 },
-    { model_name: "gemini-3.1-flash-lite-preview", svc_name: "default", token_billion: 200.7 },
-    { model_name: "glm-5.2", svc_name: "default", token_billion: 171.3 },
-    { model_name: "claude-opus-4-5-20251101", svc_name: "default", token_billion: 133.0 },
-    { model_name: "claude-opus-4-6", svc_name: "default", token_billion: 125.0 },
-    { model_name: "gemini-3.1-pro-pro-preview", svc_name: "default", token_billion: 123.0 },
-    { model_name: "claude-opus-4-7", svc_name: "default", token_billion: 78.7 },
-    { model_name: "qwen3.5-flash", svc_name: "default", token_billion: 68.0 },
-    { model_name: "text-embedding-v4", svc_name: "default", token_billion: 44.5 },
-    { model_name: "gemini-3-flash-preview", svc_name: "default", token_billion: 35.0 },
+    { model_name: "Model-Z-5", svc_name: "default", token_billion: 3540.9 },
+    { model_name: "Model-M-2.5", svc_name: "default", token_billion: 3377.5 },
+    { model_name: "Model-D-Flash", svc_name: "default", token_billion: 874.9 },
+    { model_name: "Model-Q-3.5", svc_name: "default", token_billion: 454.5 },
+    { model_name: "Model-Z-5.1", svc_name: "default", token_billion: 510.9 },
+    { model_name: "Model-D-Pro", svc_name: "default", token_billion: 319.8 },
+    { model_name: "Model-D-3.2", svc_name: "default", token_billion: 305.0 },
+    { model_name: "Model-G-Flash-Lite", svc_name: "default", token_billion: 200.7 },
+    { model_name: "Model-Z-5.2", svc_name: "default", token_billion: 171.3 },
+    { model_name: "Model-X-4.5", svc_name: "default", token_billion: 133.0 },
+    { model_name: "Model-X-4.6", svc_name: "default", token_billion: 125.0 },
+    { model_name: "Model-G-Pro-Preview", svc_name: "default", token_billion: 123.0 },
+    { model_name: "Model-X-4.7", svc_name: "default", token_billion: 78.7 },
+    { model_name: "Model-Q-3.5-Flash", svc_name: "default", token_billion: 68.0 },
+    { model_name: "Model-E-V4", svc_name: "default", token_billion: 44.5 },
+    { model_name: "Model-G-Flash", svc_name: "default", token_billion: 35.0 },
   ];
 
   const CARD138 = [
-    ["te-dc3vlj2pzjd2mdfz", "claude-opus-4-7", "92.0%", "90.0%", "85.0%"],
-    ["te-dc3vlj2pzjd2mdfz", "claude-sonnet-4-6", "90.0%", "88.0%", "82.0%"],
-    ["te-dc3vlj2pzjd2mdfz", "gemini-3.1-pro-preview", "88.0%", "86.0%", "—"],
-    ["te-dc3vlj2pzjd2mdfz", "gemini-3.5-flash", "85.0%", "83.0%", "78.0%"],
-    ["te-dc3vlj2pzjd2mdfz", "gpt-5.4", "91.0%", "89.0%", "84.0%"],
-    ["te-dc3vlj2pzjd2mdfz", "gpt-5.5", "89.0%", "87.0%", "80.0%"],
-    ["te-dco45e236gb6lhix", "glm-5", "86.0%", "84.0%", "79.0%"],
-    ["te-dco45e236gb6lhix", "deepseek-v4-pro", "82.0%", "80.0%", "75.0%"],
-    ["te-dco45e236gb6lhix", "deepseek-v4-flash", "80.0%", "78.0%", "73.0%"],
-    ["te-dco45e236gb6lhix", "glm-5.2", "88.0%", "86.0%", "81.0%"],
-    ["te-dc7bol3dacryrbyt", "gemini-3.1-pro-preview", "85.0%", "83.0%", "78.0%"],
-    ["te-dc7bol3dacryrbyt", "claude-opus-4-8", "90.0%", "88.0%", "83.0%"],
-    ["te-9a2k7m3x1pq5r0wz", "minimax-m2.5", "83.0%", "81.0%", "76.0%"],
-    ["te-bx8n4c6t2vq1y7ed", "qwen3.5-plus", "84.0%", "82.0%", "77.0%"],
+    ["tenant-002", "Model-X-7", "92.0%", "90.0%", "85.0%"],
+    ["tenant-002", "Model-S-6", "90.0%", "88.0%", "82.0%"],
+    ["tenant-002", "Model-G-Pro", "88.0%", "86.0%", "—"],
+    ["tenant-002", "Model-G-Flash", "85.0%", "83.0%", "78.0%"],
+    ["tenant-002", "Model-O-5.4", "91.0%", "89.0%", "84.0%"],
+    ["tenant-002", "Model-O-5.5", "89.0%", "87.0%", "80.0%"],
+    ["tenant-001", "Model-Z-5", "86.0%", "84.0%", "79.0%"],
+    ["tenant-001", "Model-D-Pro", "82.0%", "80.0%", "75.0%"],
+    ["tenant-001", "Model-D-Flash", "80.0%", "78.0%", "73.0%"],
+    ["tenant-001", "Model-Z-5.2", "88.0%", "86.0%", "81.0%"],
+    ["tenant-003", "Model-G-Pro", "85.0%", "83.0%", "78.0%"],
+    ["tenant-003", "Model-X-8", "90.0%", "88.0%", "83.0%"],
+    ["tenant-004", "Model-M-2.5", "83.0%", "81.0%", "76.0%"],
+    ["tenant-005", "Model-Q-3.5", "84.0%", "82.0%", "77.0%"],
   ];
 
   const CARD121 = [
-    ["te-dco45e236gb6lhix", "gemini-3.1-pro-preview", "Google", 1337240, "86.44%", 46.53, 36.99, 1.68, 126535, "19.5%"],
-    ["te-dco45e236gb6lhix", "deepseek-v4-pro", "深度求索", 3082219, "97.15%", 243.7, 154.12, 143.44, 76008, "11.7%"],
-    ["te-dc3vlj2pzjd2mdfz", "gemini-3.1-pro-preview", "Google", 533764, "98.83%", 11.95, 12.01, 0.23, 74334, "11.5%"],
-    ["te-dco45e236gb6lhix", "gpt-5.5", "OpenAI", 336475, "99.88%", 12.97, 1.82, 6.31, 53318, "8.2%"],
-    ["te-dc7bol3dacryrbyt", "gemini-3.1-pro-preview", "Google", 130468, "99.58%", 1.13, 4.64, 0, 40526, "6.3%"],
-    ["te-dc3vlj2pzjd2mdfz", "claude-opus-4-7", "Anthropic", 44453, "96.83%", 35.9, 0.4, 20.7, 34628, "5.3%"],
-    ["te-dco45e236gb6lhix", "deepseek-v4-flash", "深度求索", 13252966, "87.81%", 566.88, 123.68, 138.14, 34554, "5.3%"],
-    ["te-dco45e236gb6lhix", "claude-opus-4-8", "Anthropic", 33649, "99.4%", 28.72, 0.43, 21.1, 34405, "5.3%"],
-    ["te-dco45e236gb6lhix", "glm-5.2", "智谱", 599935, "93.11%", 103.77, 2.29, 88.91, 34059, "5.3%"],
-    ["te-dco45e236gb6lhix", "glm-5", "智谱", 8908631, "98.45%", 3507.39, 33.26, 3003.96, 18894, "2.9%"],
-    ["te-9a2k7m3x1pq5r0wz", "minimax-m2.5", "MiniMax", 1500000, "99.0%", 200.0, 100.0, 50.0, 60000, "9.2%"],
-    ["te-bx8n4c6t2vq1y7ed", "qwen3.5-plus", "阿里", 800000, "98.5%", 80.0, 40.0, 10.0, 35000, "5.4%"],
+    ["tenant-001", "Model-G-Pro", "Vendor-A", 1337240, "86.44%", 46.53, 36.99, 1.68, 126535, "19.5%"],
+    ["tenant-001", "Model-D-Pro", "Vendor-B", 3082219, "97.15%", 243.7, 154.12, 143.44, 76008, "11.7%"],
+    ["tenant-002", "Model-G-Pro", "Vendor-A", 533764, "98.83%", 11.95, 12.01, 0.23, 74334, "11.5%"],
+    ["tenant-001", "Model-O-5.5", "Vendor-C", 336475, "99.88%", 12.97, 1.82, 6.31, 53318, "8.2%"],
+    ["tenant-003", "Model-G-Pro", "Vendor-A", 130468, "99.58%", 1.13, 4.64, 0, 40526, "6.3%"],
+    ["tenant-002", "Model-X-7", "Vendor-D", 44453, "96.83%", 35.9, 0.4, 20.7, 34628, "5.3%"],
+    ["tenant-001", "Model-D-Flash", "Vendor-B", 13252966, "87.81%", 566.88, 123.68, 138.14, 34554, "5.3%"],
+    ["tenant-001", "Model-X-8", "Vendor-D", 33649, "99.4%", 28.72, 0.43, 21.1, 34405, "5.3%"],
+    ["tenant-001", "Model-Z-5.2", "Vendor-E", 599935, "93.11%", 103.77, 2.29, 88.91, 34059, "5.3%"],
+    ["tenant-001", "Model-Z-5", "Vendor-E", 8908631, "98.45%", 3507.39, 33.26, 3003.96, 18894, "2.9%"],
+    ["tenant-004", "Model-M-2.5", "Vendor-F", 1500000, "99.0%", 200.0, 100.0, 50.0, 60000, "9.2%"],
+    ["tenant-005", "Model-Q-3.5", "Vendor-G", 800000, "98.5%", 80.0, 40.0, 10.0, 35000, "5.4%"],
   ];
 
   const CARD161 = [
@@ -130,7 +130,7 @@
       $$(".role-btn").forEach((x) => x.classList.remove("active"));
       b.classList.add("active");
       state.role = b.dataset.role;
-      $("#loginUser").value = state.role === "admin" ? "admin" : "liuwei";
+      $("#loginUser").value = state.role === "admin" ? "admin" : "zhangsan";
     };
   });
 
@@ -147,14 +147,14 @@
 
   function setupUser() {
     if (state.role === "admin") {
-      $("#userName").textContent = "赵敏";
-      $("#userAvatar").textContent = "赵";
+      $("#userName").textContent = "管理员";
+      $("#userAvatar").textContent = "管";
       $("#userRole").textContent = "管理员";
       $$(".admin-section").forEach((e) => e.style.display = "block");
     } else {
-      $("#userName").textContent = "刘伟";
-      $("#userAvatar").textContent = "刘";
-      $("#userRole").textContent = "商务 · 华东区";
+      $("#userName").textContent = "张三";
+      $("#userAvatar").textContent = "张";
+      $("#userRole").textContent = "商务 · 区域A";
       $$(".admin-section").forEach((e) => e.style.display = "none");
     }
   }
