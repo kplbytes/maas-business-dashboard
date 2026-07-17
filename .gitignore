@@ -4,3 +4,19 @@ build/
 .DS_Store
 *.log
 *.tmp
+
+# 敏感文档与配置（仅本地保留，不推送到仓库）
+docs/
+*.env
+.env.*
+*.secret
+*.key
+*.pem
+config/local.*
+application-local.yml
+application-prod.yml
+
+# IDE
+.idea/
+.vscode/
+*.swp
