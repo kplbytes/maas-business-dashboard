@@ -926,6 +926,19 @@ button {
   font-weight: 600;
   font-size: 14px;
   color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.user-row .user-login {
+  font-weight: 400;
+  font-size: 11px;
+  color: var(--text-muted);
+  background: var(--bg-card);
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-family: 'SF Mono', 'Consolas', monospace;
 }
 
 .user-row .meta {

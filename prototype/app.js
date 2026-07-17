@@ -18,11 +18,12 @@
   const MY_TENANTS = ["tenant-001", "tenant-002", "tenant-003"];
 
   const USERS = [
-    { id: 1, name: "张三", region: "区域A", role: "sales", assigned: ["tenant-001", "tenant-002", "tenant-003"] },
-    { id: 2, name: "李四", region: "区域B", role: "sales", assigned: ["tenant-002", "tenant-004"] },
-    { id: 3, name: "王五", region: "区域C", role: "sales", assigned: ["tenant-005", "tenant-006"] },
-    { id: 4, name: "赵六", region: "区域A", role: "sales", assigned: [] },
-    { id: 5, name: "管理员", region: "管理中心", role: "admin", assigned: [] },
+    { id: 1, name: "张三", username: "zhangsan", region: "区域A", role: "sales", assigned: ["tenant-001", "tenant-002", "tenant-003"] },
+    { id: 2, name: "李四", username: "lisi", region: "区域B", role: "sales", assigned: ["tenant-002", "tenant-004"] },
+    { id: 3, name: "王五", username: "wangwu", region: "区域C", role: "sales", assigned: ["tenant-005", "tenant-006"] },
+    { id: 4, name: "赵六", username: "zhaoliu", region: "区域A", role: "sales", assigned: [] },
+    { id: 5, name: "张三", username: "zhangsan1", region: "区域B", role: "sales", assigned: [] },
+    { id: 6, name: "管理员", username: "admin", region: "管理中心", role: "admin", assigned: [] },
   ];
 
   let state = {
@@ -130,7 +131,10 @@
       $$(".role-btn").forEach((x) => x.classList.remove("active"));
       b.classList.add("active");
       state.role = b.dataset.role;
-      $("#loginUser").value = state.role === "admin" ? "admin" : "zhangsan";
+      const u = state.role === "admin"
+        ? USERS.find((x) => x.role === "admin")
+        : USERS.find((x) => x.role === "sales");
+      $("#loginUser").value = u ? u.username : "";
     };
   });
 
@@ -146,15 +150,17 @@
   $("#logoutBtn").onclick = () => location.reload();
 
   function setupUser() {
+    const loginInput = $("#loginUser").value.trim();
+    const u = USERS.find((x) => x.username === loginInput) || USERS.find((x) => x.role === state.role);
+    if (u) {
+      state.selectedUser = u.id;
+      $("#userName").textContent = u.name;
+      $("#userAvatar").textContent = u.name[0];
+      $("#userRole").textContent = state.role === "admin" ? "管理员" : `商务 · ${u.region} · ${u.username}`;
+    }
     if (state.role === "admin") {
-      $("#userName").textContent = "管理员";
-      $("#userAvatar").textContent = "管";
-      $("#userRole").textContent = "管理员";
       $$(".admin-section").forEach((e) => e.style.display = "block");
     } else {
-      $("#userName").textContent = "张三";
-      $("#userAvatar").textContent = "张";
-      $("#userRole").textContent = "商务 · 区域A";
       $$(".admin-section").forEach((e) => e.style.display = "none");
     }
   }
@@ -641,7 +647,7 @@
       row.className = "user-row" + (u.id === state.selectedUser ? " active" : "");
       const av = ["#3B82F6", "#10B981", "#8B5CF6", "#F97316"];
       row.innerHTML = `<div class="avatar" style="background:${av[u.id % 4]}">${u.name[0]}</div>
-        <div><div class="name">${u.name}</div><div class="meta">${u.region}</div></div>
+        <div><div class="name">${u.name}<span class="user-login">${u.username}</span></div><div class="meta">${u.region}</div></div>
         <div class="cnt">${u.assigned.length} 租户</div>`;
       row.onclick = () => {
         state.selectedUser = u.id;
