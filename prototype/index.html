@@ -175,6 +175,31 @@
           </div>
         </div>
 
+        <div class="kpi-card">
+          <div class="kpi-icon orange">B</div>
+          <div class="kpi-content">
+            <div class="kpi-label">真实余额</div>
+            <div class="kpi-value" id="kpi-real-balance">¥188,114</div>
+            <div class="kpi-change up">+5.2% 较上周</div>
+          </div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-icon cyan">A</div>
+          <div class="kpi-content">
+            <div class="kpi-label">可用余额</div>
+            <div class="kpi-value" id="kpi-available-balance">¥198,114</div>
+            <div class="kpi-change up">+3.8% 较上周</div>
+          </div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-icon pink">R</div>
+          <div class="kpi-content">
+            <div class="kpi-label">充值金额</div>
+            <div class="kpi-value" id="kpi-recharge">¥3,229,714</div>
+            <div class="kpi-change up">+12.5% 较上周</div>
+          </div>
+        </div>
+
         <div class="chart-card full-width">
           <div class="card-header">
             <div class="card-title">
@@ -267,10 +292,12 @@
             <div class="tenant-assign">
               <div class="assign-column">
                 <h4>可分配租户池</h4>
+                <input type="text" class="assign-search" id="poolSearch" placeholder="搜索租户..." />
                 <div class="tenant-list" id="tenantPool"></div>
               </div>
               <div class="assign-column">
                 <h4>已分配租户</h4>
+                <input type="text" class="assign-search" id="assignedSearch" placeholder="搜索已分配租户..." />
                 <div class="tenant-list" id="assignedTenants"></div>
               </div>
             </div>

@@ -598,6 +598,11 @@
     $("#kpi-revenue").textContent = fmtMoney(totalRevenue);
     $("#kpi-tokens").innerHTML = totalTokens.toLocaleString() + '<span class="kpi-unit">亿</span>';
     $("#kpi-calls").innerHTML = totalCalls.toLocaleString() + '<span class="kpi-unit">次</span>';
+
+    const lastFundRow = CARD161[CARD161.length - 1] || [0, 0, 0, 0, 0];
+    $("#kpi-real-balance").textContent = fmtMoney(lastFundRow[4]);
+    $("#kpi-available-balance").textContent = fmtMoney(lastFundRow[3]);
+    $("#kpi-recharge").textContent = fmtMoney(lastFundRow[1]);
   }
 
   function renderTables() {
@@ -655,8 +660,25 @@
       assigned = $("#assignedTenants");
     pool.innerHTML = "";
     assigned.innerHTML = "";
+
+    // 计算已被其他用户分配的租户集合
+    const assignedByOthers = new Set();
+    USERS.forEach((user) => {
+      if (user.id !== u.id) {
+        user.assigned.forEach((key) => assignedByOthers.add(key));
+      }
+    });
+
+    const poolFilter = ($("#poolSearch")?.value || "").toLowerCase();
+    const assignedFilter = ($("#assignedSearch")?.value || "").toLowerCase();
+
     TENANTS.forEach((t) => {
       const on = u.assigned.includes(t.key);
+
+      // 如果已被其他用户分配，且不是当前用户已分配的，则不显示在可分配池
+      if (!on && assignedByOthers.has(t.key)) return;
+
+      const searchText = (t.name + " " + t.key).toLowerCase();
       const el = document.createElement("div");
       el.className = "tenant-chip" + (on ? " assigned" : "");
       el.innerHTML = `<div><div class="name">${t.name}</div><div class="key">${t.key}</div></div><span class="action">${on ? "×" : "+"}</span>`;
@@ -666,13 +688,32 @@
         toast(`${on ? "已移除" : "已分配"} ${t.name} → ${u.name}`);
         renderAdmin();
       };
-      (on ? assigned : pool).appendChild(el);
+
+      if (on) {
+        if (!assignedFilter || searchText.includes(assignedFilter)) {
+          assigned.appendChild(el);
+        }
+      } else {
+        if (!poolFilter || searchText.includes(poolFilter)) {
+          pool.appendChild(el);
+        }
+      }
     });
-    if (u.assigned.length === 0) assigned.innerHTML = '<div class="empty-state">暂无分配</div>';
+
+    if (assigned.children.length === 0) {
+      assigned.innerHTML = '<div class="empty-state">暂无分配</div>';
+    }
+    if (pool.children.length === 0) {
+      pool.innerHTML = '<div class="empty-state">无可用租户</div>';
+    }
   }
 
   $("#syncTenantBtn") && ($("#syncTenantBtn").onclick = () => toast("已从 ADB 同步租户主数据"));
   $("#newUserBtn") && ($("#newUserBtn").onclick = () => toast("新建商务：弹窗采集账号/姓名/区域 → 分配租户"));
+
+  // 租户分配搜索框监听
+  $("#poolSearch") && ($("#poolSearch").oninput = () => renderAssignment());
+  $("#assignedSearch") && ($("#assignedSearch").oninput = () => renderAssignment());
 
   // Password modal
   const modalPassword = $("#modalPassword");
