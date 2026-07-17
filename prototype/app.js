@@ -545,13 +545,16 @@
       option = {
         tooltip: baseOption.tooltip,
         grid: seriesData.map((_, i) => ({
-          left: "3%",
+          left: "8%",
           right: "4%",
-          top: `${i * 24 + 2}%`,
-          height: "20%",
+          top: `${i * 23 + 3}%`,
+          height: "19%",
           containLabel: true,
         })),
-        xAxis: seriesData.map(() => ({ ...baseOption.xAxis })),
+        xAxis: seriesData.map((_, i) => ({
+          ...baseOption.xAxis,
+          axisLabel: i === seriesData.length - 1 ? baseOption.xAxis.axisLabel : { show: false },
+        })),
         yAxis: seriesData.map(() => ({ ...baseOption.yAxis })),
         series: seriesData.map((s, i) => ({
           name: s.name,
@@ -559,8 +562,8 @@
           smooth: true,
           symbol: "circle",
           symbolSize: 4,
-          lineStyle: { width: 3, color: s.color, type: s.dashed ? "dashed" : "solid" },
-          itemStyle: { color: s.color, borderWidth: 2, borderColor: "#1E293B" },
+          lineStyle: { width: 2.5, color: s.color, type: s.dashed ? "dashed" : "solid" },
+          itemStyle: { color: s.color, borderWidth: 1.5, borderColor: "#1E293B" },
           areaStyle: {
             color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
               { offset: 0, color: s.gradient },

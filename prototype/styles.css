@@ -836,6 +836,10 @@ button {
   min-height: 280px;
 }
 
+#card-161 {
+  min-height: 400px;
+}
+
 .admin-layout {
   flex: 1;
   padding: 24px;
