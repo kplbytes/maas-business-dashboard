@@ -31,6 +31,7 @@
     selectedTenants: [],
     dateRange: { preset: "7d", start: "", end: "" },
     selectedUser: 1,
+    chartViewMode: "overlay",
   };
   let charts = {};
 
@@ -470,8 +471,14 @@
     if (charts.card161) charts.card161.dispose();
     charts.card161 = echarts.init(dom);
     const xLabels = CARD161.map((r) => r[0]);
+    const seriesData = [
+      { name: "充值+授信+代金券总额", data: CARD161.map((r) => r[1]), color: ACC[0], gradient: "rgba(245, 158, 11, 0.3)" },
+      { name: "累计消费总额", data: CARD161.map((r) => r[2]), color: ACC[1], gradient: "rgba(6, 182, 212, 0.3)" },
+      { name: "可用余额(含授信)", data: CARD161.map((r) => r[3]), color: ACC[4], gradient: "rgba(236, 72, 153, 0.3)" },
+      { name: "真实余额", data: CARD161.map((r) => r[4]), color: ACC[2], gradient: "rgba(59, 130, 246, 0.3)", dashed: true },
+    ];
 
-    const option = {
+    const baseOption = {
       tooltip: {
         trigger: "axis",
         backgroundColor: "rgba(30, 41, 59, 0.95)",
@@ -479,25 +486,7 @@
         borderWidth: 1,
         padding: [12, 16],
         textStyle: { color: "#F8FAFC", fontSize: 13 },
-        axisPointer: {
-          type: "cross",
-          crossStyle: { color: "#64748B" },
-        },
-      },
-      legend: {
-        data: ["充值+授信+代金券总额", "累计消费总额", "可用余额(含授信)", "真实余额"],
-        bottom: 0,
-        itemWidth: 12,
-        itemHeight: 12,
-        itemGap: 20,
-        textStyle: { color: "#94A3B8", fontSize: 12 },
-      },
-      grid: {
-        left: "3%",
-        right: "4%",
-        bottom: "15%",
-        top: "8%",
-        containLabel: true,
+        axisPointer: { type: "cross", crossStyle: { color: "#64748B" } },
       },
       xAxis: {
         type: "category",
@@ -520,61 +509,70 @@
         },
         splitLine: { lineStyle: { color: "#334155", type: "dashed" } },
       },
-      series: [
-        {
-          name: "充值+授信+代金券总额",
-          type: "line",
-          smooth: true,
-          symbol: "circle",
-          symbolSize: 6,
-          lineStyle: { width: 3, color: ACC[0] },
-          itemStyle: { color: ACC[0], borderWidth: 2, borderColor: "#1E293B" },
-          areaStyle: {
-            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-              { offset: 0, color: "rgba(59, 130, 246, 0.3)" },
-              { offset: 1, color: "rgba(59, 130, 246, 0)" },
-            ]),
-          },
-          data: CARD161.map((r) => r[1]),
-        },
-        {
-          name: "累计消费总额",
-          type: "line",
-          smooth: true,
-          symbol: "circle",
-          symbolSize: 6,
-          lineStyle: { width: 3, color: ACC[1] },
-          itemStyle: { color: ACC[1], borderWidth: 2, borderColor: "#1E293B" },
-          areaStyle: {
-            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-              { offset: 0, color: "rgba(16, 185, 129, 0.3)" },
-              { offset: 1, color: "rgba(16, 185, 129, 0)" },
-            ]),
-          },
-          data: CARD161.map((r) => r[2]),
-        },
-        {
-          name: "可用余额(含授信)",
-          type: "line",
-          smooth: true,
-          symbol: "circle",
-          symbolSize: 6,
-          lineStyle: { width: 3, color: ACC[4] },
-          itemStyle: { color: ACC[4], borderWidth: 2, borderColor: "#1E293B" },
-          data: CARD161.map((r) => r[3]),
-        },
-        {
-          name: "真实余额",
-          type: "line",
-          smooth: true,
-          symbol: "circle",
-          symbolSize: 6,
-          lineStyle: { width: 3, color: ACC[2], type: "dashed" },
-          itemStyle: { color: ACC[2], borderWidth: 2, borderColor: "#1E293B" },
-          data: CARD161.map((r) => r[4]),
-        },
-      ],
     };
+
+    let option;
+    if (state.chartViewMode === "overlay") {
+      option = {
+        ...baseOption,
+        legend: {
+          data: seriesData.map((s) => s.name),
+          bottom: 0,
+          itemWidth: 12,
+          itemHeight: 12,
+          itemGap: 20,
+          textStyle: { color: "#94A3B8", fontSize: 12 },
+        },
+        grid: { left: "3%", right: "4%", bottom: "15%", top: "8%", containLabel: true },
+        series: seriesData.map((s) => ({
+          name: s.name,
+          type: "line",
+          smooth: true,
+          symbol: "circle",
+          symbolSize: 6,
+          lineStyle: { width: 3, color: s.color, type: s.dashed ? "dashed" : "solid" },
+          itemStyle: { color: s.color, borderWidth: 2, borderColor: "#1E293B" },
+          areaStyle: s.name !== "真实余额" ? {
+            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+              { offset: 0, color: s.gradient },
+              { offset: 1, color: "transparent" },
+            ]),
+          } : undefined,
+          data: s.data,
+        })),
+      };
+    } else {
+      option = {
+        tooltip: baseOption.tooltip,
+        grid: seriesData.map((_, i) => ({
+          left: "3%",
+          right: "4%",
+          top: `${i * 24 + 2}%`,
+          height: "20%",
+          containLabel: true,
+        })),
+        xAxis: seriesData.map(() => ({ ...baseOption.xAxis })),
+        yAxis: seriesData.map(() => ({ ...baseOption.yAxis })),
+        series: seriesData.map((s, i) => ({
+          name: s.name,
+          type: "line",
+          smooth: true,
+          symbol: "circle",
+          symbolSize: 4,
+          lineStyle: { width: 3, color: s.color, type: s.dashed ? "dashed" : "solid" },
+          itemStyle: { color: s.color, borderWidth: 2, borderColor: "#1E293B" },
+          areaStyle: {
+            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+              { offset: 0, color: s.gradient },
+              { offset: 1, color: "transparent" },
+            ]),
+          },
+          xAxisIndex: i,
+          yAxisIndex: i,
+          data: s.data,
+        })),
+      };
+    }
     charts.card161.setOption(option);
   }
 
@@ -636,6 +634,22 @@
     toast("数据已刷新 · 数据源：AnalyticDB for MySQL");
     refreshAll();
   };
+
+  $("#chartOverlayBtn") && ($("#chartOverlayBtn").onclick = () => {
+    state.chartViewMode = "overlay";
+    $("#chartOverlayBtn").classList.add("active");
+    $("#chartCompareBtn").classList.remove("active");
+    initCard161();
+    toast("已切换为叠加显示");
+  });
+
+  $("#chartCompareBtn") && ($("#chartCompareBtn").onclick = () => {
+    state.chartViewMode = "compare";
+    $("#chartCompareBtn").classList.add("active");
+    $("#chartOverlayBtn").classList.remove("active");
+    initCard161();
+    toast("已切换为对比显示");
+  });
 
   function renderAdmin() {
     const box = $("#adminUsers");
